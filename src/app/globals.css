@@ -1,26 +1,129 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* FiLLi brand tokens — taken from fillicafe.com */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-filli: #fc5007;        /* brand orange */
+  --color-filli-dark: #e04500;   /* orange hover */
+  --color-cream: #fff4ca;        /* page background */
+  --color-bean: #3f2016;         /* primary brown */
+  --color-bean-dark: #1a0e08;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-dm-sans), Helvetica, sans-serif;
+  --font-sinhala: var(--font-sinhala), var(--font-dm-sans), sans-serif;
+  --font-tamil: var(--font-tamil), var(--font-dm-sans), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: #fff4ca;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #fff4ca;
+  color: #3f2016;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: #fc5007;
+  color: #fff;
+}
+
+/* fillicafe.com headline style: heavy sans + Playfair italic accent */
+.headline {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+.headline em {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #fc5007;
+}
+
+/* eyebrow: orange rule + small caps label */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #fc5007;
+}
+.eyebrow::before {
+  content: "";
+  width: 2.25rem;
+  height: 2px;
+  background: currentColor;
+}
+
+/* pill buttons, as on fillicafe.com */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.8rem 1.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+.btn-orange { background: #fc5007; color: #fff; }
+.btn-orange:hover { background: #e04500; }
+.btn-brown { background: #3f2016; color: #fff4ca; }
+.btn-brown:hover { background: #fc5007; color: #fff; }
+.btn-line { border: 1px solid #3f2016; color: #3f2016; }
+.btn-line:hover { background: #fc5007; border-color: #fc5007; color: #fff; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(6px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.9s ease;
+}
+.reveal[data-shown] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* readable panels over the 3D scene on small screens */
+.panel {
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  background: rgb(255 244 202 / 0.72);
+  backdrop-filter: blur(12px);
+}
+@media (min-width: 768px) {
+  .panel { padding: 0; background: none; backdrop-filter: none; }
+}
+
+/* above-the-fold entrance: pure CSS so the hero never waits on JS */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+.rise {
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes drip {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, #fc5007);
+  animation: drip 1.6s ease-in infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; opacity: 1; transform: none; filter: none; }
+  .scroll-cue::after { animation: none; }
+  .rise { animation: none; }
 }
